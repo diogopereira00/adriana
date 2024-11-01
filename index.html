@@ -351,45 +351,6 @@
 				background: transparent;
 			}
 
-			/* Botão de Controle de Som */
-			.sound-control {
-				position: fixed;
-				top: 20px;
-				right: 20px;
-				background: rgba(0, 0, 0, 0.5);
-				border: none;
-				border-radius: 50%;
-				padding: 10px;
-				cursor: pointer;
-				font-size: 1.5rem;
-				color: white;
-				z-index: 1001; /* Superior ao restante do conteúdo */
-				transition: background 0.3s ease;
-			}
-
-			.sound-control:hover {
-				background: rgba(0, 0, 0, 0.7);
-			}
-
-			/* Feedback de Som */
-			.sound-status {
-				position: fixed;
-				top: 60px; /* Ajuste conforme necessário */
-				right: 20px;
-				color: white;
-				font-size: 0.9rem;
-				background: rgba(0, 0, 0, 0.5);
-				padding: 5px 10px;
-				border-radius: 5px;
-				z-index: 1001;
-				transition: opacity 0.3s ease;
-			}
-
-			.sound-status.hidden {
-				opacity: 0;
-				pointer-events: none;
-			}
-
 			/* Media Query para dispositivos com largura máxima de 600px */
 			@media (max-width: 600px) {
 				.final-content {
@@ -422,20 +383,6 @@
 		</script>
 	</head>
 	<body>
-		<!-- Botão de Controle de Som com Feedback -->
-		<button
-			id="soundControl"
-			class="sound-control"
-			aria-label="Controle de Som"
-			title="Mute/Unmute"
-		>
-			🔊
-		</button>
-		<span id="soundStatus" class="sound-status">Clique para ouvir música</span>
-
-		<!-- Elemento de Áudio para a Música de Fundo -->
-		<audio id="backgroundMusic" src="musica.mp3" preload="auto"></audio>
-
 		<!-- Match Animation Container -->
 		<div class="match-container">
 			<!-- Centralizar conteúdo -->
@@ -486,69 +433,6 @@
 				const progressContainer = document.querySelector('.progress-container');
 				const finalSection = document.querySelector('.final-section');
 
-				// Seleção do elemento de áudio
-				const backgroundMusic = document.getElementById('backgroundMusic');
-
-				// Seleção do botão de controle de som
-				const soundControlButton = document.getElementById('soundControl');
-
-				// Seleção do elemento de feedback
-				const soundStatus = document.getElementById('soundStatus');
-
-				// Flag para verificar se a música já foi iniciada
-				let musicStarted = false;
-
-				// Função para atualizar o ícone do botão
-				function updateSoundIcon() {
-					if (backgroundMusic.muted || backgroundMusic.volume === 0) {
-						soundControlButton.textContent = '🔇'; // Ícone de som desativado
-					} else if (
-						backgroundMusic.volume > 0 &&
-						backgroundMusic.volume <= 0.5
-					) {
-						soundControlButton.textContent = '🔉'; // Ícone de som baixo
-					} else {
-						soundControlButton.textContent = '🔊'; // Ícone de som alto
-					}
-				}
-
-				// Inicializar o ícone do botão
-				updateSoundIcon();
-
-				// Função para reproduzir a música de fundo
-				function playBackgroundMusic() {
-					backgroundMusic.volume = 0.3; // 30% do volume
-					backgroundMusic
-						.play()
-						.then(() => {
-							musicStarted = true;
-							updateSoundIcon();
-							// Ocultar o feedback após a reprodução iniciar
-							soundStatus.classList.add('hidden');
-						})
-						.catch((error) => {
-							console.warn('Reprodução da música falhou:', error);
-						});
-				}
-
-				// Adicionar event listener para o botão de controle de som
-				soundControlButton.addEventListener('click', () => {
-					if (!musicStarted) {
-						// Iniciar a música na primeira interação
-						playBackgroundMusic();
-					} else {
-						// Alternar mute/unmute em interações subsequentes
-						backgroundMusic.muted = !backgroundMusic.muted;
-						if (!backgroundMusic.muted && backgroundMusic.volume === 0) {
-							backgroundMusic.volume = 0.3; // Restaurar o volume se estava zero
-						}
-						updateSoundIcon();
-					}
-				});
-
-				// Atualizar o ícone quando o volume for alterado via outras interações (se houver)
-				backgroundMusic.addEventListener('volumechange', updateSoundIcon);
-
 				// Animação de entrada dos avatares
 				avatars[0].style.animation = 'slideInLeft 0.8s forwards';
 				avatars[1].style.animation = 'slideInRight 0.8s forwards';
@@ -595,7 +479,7 @@
 
 					const textos = [
 						'"Toda desprevenida portanto 🤣"',
-						'Foi assim que tudo começou a 18 de agosto',
+						'Foi assim que tudo começou a 18 de agosto de 2024',
 						'De facto já se passou algum tempo',
 						timePassed, // Adiciona a frase dinâmica aqui
 						'E sei que falhei contigo 🙄',
@@ -603,11 +487,11 @@
 						'Mas tudo acontece por um motivo...',
 						'E de pressa e bem há pouco quem',
 						'Foram precisos 3 anos para começarmos a falar',
-						'E agora que começamos, não sei se faz muito sentido deixar',
+						'E agora que começamos, não sei se faz muito sentido deixar 😅',
 						'Enquanto houver 1% de chance...',
 						'Vou tentar a minha sorte 👀',
 						'E se calhar isto até é demais',
-						'Mas ao menos estou a tentar',
+						'Mas ao menos estou a tentar 😅',
 						'Sei que ficou muito por fazer...',
 						'E por dizer...',
 						'Ainda não comemos os crepes 🥞',
@@ -622,7 +506,6 @@
 						'És mesmo especial, e sei que errei contigo',
 						'E por isso Adriana...',
 					];
-
 					// Criar slides
 					textos.forEach((texto, index) => {
 						const slide = document.createElement('div');
