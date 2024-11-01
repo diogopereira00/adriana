@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Um convite especial</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+				overflow: hidden;
+				position: relative;
+				height: 100vh;
+				color: white;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+			}
+
+			#fireworks {
+				position: fixed;
+				width: 100%;
+				height: 100%;
+				top: 0;
+				left: 0;
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			/* Match Animation Styles */
+			.match-container {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100vh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				background: rgba(0, 0, 0, 0.9);
+				z-index: 1000;
+				opacity: 1;
+				transition: opacity 0.5s ease;
+				gap: 30px; /* Espaçamento entre os elementos */
+			}
+
+			.avatars-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 20px;
+			}
+
+			.avatar {
+				width: 120px;
+				height: 120px;
+				border-radius: 50%;
+				border: 3px solid white;
+				object-fit: cover;
+				opacity: 0;
+				transform: translateX(-100px);
+			}
+
+			.avatar:last-child {
+				transform: translateX(100px);
+			}
+
+			.match-text {
+				font-size: 3rem;
+				font-weight: bold;
+				color: white;
+				opacity: 0;
+				transform: scale(0.5);
+				text-align: center;
+			}
+
+			/* Centralizar conteúdo */
+			.match-content {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				gap: 30px; /* Espaçamento entre avatares e texto */
+			}
+
+			/* Avatar Animation */
+			@keyframes slideInLeft {
+				to {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+
+			@keyframes slideInRight {
+				to {
+					opacity: 1;
+					transform: translateX(0);
+				}
+			}
+
+			@keyframes matchPop {
+				0% {
+					opacity: 0;
+					transform: scale(0.5);
+				}
+				70% {
+					opacity: 1;
+					transform: scale(1.2);
+				}
+				100% {
+					opacity: 1;
+					transform: scale(1);
+				}
+			}
+
+			@keyframes fadeOutMatch {
+				to {
+					opacity: 0;
+				}
+			}
+
+			/* Modified Slides Container for horizontal scrolling */
+			.slides-container {
+				height: 100vh;
+				overflow: hidden;
+				position: relative;
+				opacity: 0;
+				transition: opacity 1s ease;
+				z-index: 2;
+			}
+
+			.slide {
+				height: 100vh;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				position: absolute;
+				width: 100%;
+				transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+			}
+
+			.slide-content {
+				font-size: 2rem;
+				text-align: center;
+				padding: 20px;
+				max-width: 80%;
+			}
+
+			/* Modified progress bar styles */
+			.progress-container {
+				position: fixed;
+				top: 20px;
+				left: 0;
+				right: 0;
+				display: flex;
+				gap: 4px;
+				padding: 0 16px;
+				z-index: 5;
+			}
+
+			.progress-bar {
+				flex: 1;
+				height: 2px;
+				background: rgba(255, 255, 255, 0.3);
+				border-radius: 2px;
+				overflow: hidden;
+			}
+
+			.progress-bar-fill {
+				height: 100%;
+				background: white;
+				width: 0%;
+				transition: width linear;
+			}
+
+			/* Modified navigation for horizontal scroll */
+			.navigation-overlay {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: flex;
+				z-index: 4;
+			}
+
+			.nav-area {
+				width: 50%;
+				height: 100%;
+				cursor: pointer;
+				-webkit-tap-highlight-color: transparent;
+			}
+
+			/* Removendo estilos antigos de scroll */
+			.swipe-indicator {
+				display: none;
+			}
+
+			/* Ajustando slide-indicators para stories */
+			.slide-indicators {
+				display: none;
+			}
+
+			/* Estilos refinados para a seção final */
+			.final-section {
+				display: none;
+				height: 100vh;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				padding: 20px;
+				text-align: center;
+				z-index: 2;
+				position: relative;
+				background: linear-gradient(
+					135deg,
+					rgba(255, 154, 158, 0.8) 0%,
+					rgba(250, 208, 196, 0.8) 100%
+				);
+			}
+
+			.final-content {
+				opacity: 0;
+				transform: scale(0.5);
+				animation: popIn 1s forwards;
+				background: rgba(255, 255, 255, 0.1);
+				backdrop-filter: blur(10px);
+				padding: 2.5rem;
+				border-radius: 20px;
+				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				max-width: 90%;
+				width: 400px;
+			}
+
+			@keyframes popIn {
+				0% {
+					opacity: 0;
+					transform: scale(0.5) translateY(50px);
+				}
+				50% {
+					transform: scale(1.1) translateY(-10px);
+				}
+				75% {
+					transform: scale(0.95) translateY(5px);
+				}
+				100% {
+					opacity: 1;
+					transform: scale(1) translateY(0);
+				}
+			}
+
+			.question {
+				font-size: 2.5rem;
+				color: white;
+				margin-bottom: 2rem;
+				font-weight: bold;
+				text-align: center;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+				animation: pulseText 2s infinite;
+			}
+
+			@keyframes pulseText {
+				0%,
+				100% {
+					transform: scale(1);
+				}
+				50% {
+					transform: scale(1.05);
+				}
+			}
+
+			.buttons {
+				display: flex;
+				flex-direction: column;
+				gap: 1.5rem;
+				width: 100%;
+				margin-top: 2rem;
+			}
+
+			button {
+				padding: 15px 30px;
+				font-size: 1.2rem;
+				border: none;
+				border-radius: 25px;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				width: 100%;
+				transform-origin: center;
+				font-weight: bold;
+				letter-spacing: 1px;
+			}
+
+			#btnSim {
+				background: linear-gradient(45deg, #4caf50, #45a049);
+				color: white;
+				box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+				animation: pulse 2s infinite;
+			}
+
+			#btnSim:hover {
+				transform: scale(1.05);
+				box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+			}
+
+			#btnNao {
+				background: linear-gradient(45deg, #f44336, #da190b);
+				color: white;
+				box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
+				transition: all 0.3s ease;
+			}
+
+			#btnNao:hover {
+				transform: scale(0.95);
+				box-shadow: 0 2px 10px rgba(244, 67, 54, 0.3);
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+					box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+				}
+				50% {
+					transform: scale(1.05);
+					box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+				}
+				100% {
+					transform: scale(1);
+					box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+				}
+			}
+
+			/* Estilos para feedback visual ao tocar */
+			.nav-area:active {
+				background: transparent;
+			}
+
+			/* Media Query para dispositivos com largura máxima de 600px */
+			@media (max-width: 600px) {
+				.final-content {
+					width: auto; /* Remove a largura fixa */
+					max-width: 90%; /* Mantém a largura máxima em 90% da tela */
+					margin: 0 20px; /* Adiciona uma margem de 20px à esquerda e à direita */
+					padding: 2rem; /* Ajusta o padding se necessário */
+				}
+			}
+
+			/* Media Query adicional para telas muito pequenas (opcional) */
+			@media (max-width: 400px) {
+				.final-content {
+					margin: 0 10px; /* Margem menor para telas muito pequenas */
+					padding: 1.5rem; /* Reduz o padding se necessário */
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Match Animation Container -->
+		<div class="match-container">
+			<!-- Centralizar conteúdo -->
+			<div class="match-content">
+				<div class="avatars-container">
+					<!-- Substitua os src abaixo pelos URLs reais das imagens dos avatares -->
+					<img
+						src="https://i.imgur.com/AtO9jy3.jpeg"
+						alt="Avatar 1"
+						class="avatar"
+					/>
+					<img
+						src="https://i.imgur.com/b8v2wXg.jpeg"
+						alt="Avatar 2"
+						class="avatar"
+					/>
+				</div>
+				<div class="match-text">IT'S A MATCH! 👀</div>
+			</div>
+		</div>
+
+		<div id="fireworks"></div>
+
+		<div class="slides-container">
+			<!-- Progress bars serão inseridas aqui via JavaScript -->
+			<div class="progress-container"></div>
+
+			<!-- Áreas de navegação -->
+			<div class="navigation-overlay">
+				<div class="nav-area" id="prevArea"></div>
+				<div class="nav-area" id="nextArea"></div>
+			</div>
+		</div>
+
+		<div class="final-section">
+			<!-- O conteúdo final será inserido dinamicamente via JavaScript -->
+		</div>
+
+		<!-- Biblioteca Fireworks JS -->
+		<script src="https://cdn.jsdelivr.net/npm/fireworks-js/dist/fireworks.js"></script>
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				// Seleção dos elementos principais
+				const matchContainer = document.querySelector('.match-container');
+				const avatars = document.querySelectorAll('.avatar');
+				const matchText = document.querySelector('.match-text');
+				const slidesContainer = document.querySelector('.slides-container');
+				const progressContainer = document.querySelector('.progress-container');
+				const finalSection = document.querySelector('.final-section');
+
+				// Animação de entrada dos avatares
+				avatars[0].style.animation = 'slideInLeft 0.8s forwards';
+				avatars[1].style.animation = 'slideInRight 0.8s forwards';
+
+				// Animação do texto "IT'S A MATCH!"
+				setTimeout(() => {
+					matchText.style.animation = 'matchPop 0.5s forwards';
+				}, 800);
+
+				// Após a animação, fade out e exibição dos slides
+				setTimeout(() => {
+					matchContainer.style.animation = 'fadeOutMatch 0.5s forwards';
+					setTimeout(() => {
+						matchContainer.style.display = 'none';
+						slidesContainer.style.opacity = '1';
+						initializeSlides(); // Inicializa os slides após a animação
+					}, 500);
+				}, 2500); // Tempo total da animação de match
+
+				// Função para calcular a diferença de tempo
+				function getTimeDifference() {
+					// Defina a data de início aqui (18 de agosto às 8h48)
+					const startDate = new Date('August 18, 2024 08:48:00');
+					const now = new Date();
+
+					// Calcula a diferença em milissegundos
+					let diffInMs = now - startDate;
+
+					// Calcula os dias, horas e minutos
+					const diffInSeconds = Math.floor(diffInMs / 1000);
+					const days = Math.floor(diffInSeconds / (3600 * 24));
+					let remainingSeconds = diffInSeconds % (3600 * 24);
+					const hours = Math.floor(remainingSeconds / 3600);
+					remainingSeconds %= 3600;
+					const minutes = Math.floor(remainingSeconds / 60);
+
+					return `<br>${days} dias, ${hours} horas e ${minutes} minutos <br> para ser mais exato`;
+				}
+
+				// Função para inicializar os slides
+				function initializeSlides() {
+					const STORY_DURATION = 5000; // 5 segundos por história
+					const timePassed = getTimeDifference(); // Obtém o tempo decorrido
+
+					const textos = [
+						'"Toda desprevenida portanto 🤣"',
+						'Foi assim que tudo começou a 18 de agosto',
+						'De facto já se passou algum tempo',
+						timePassed, // Adiciona a frase dinâmica aqui
+						'E sei que falhei contigo 🙄',
+						'E acredita, que estou mesmo arrependido 😞',
+						'Mas tudo acontece por um motivo...',
+						'E de pressa e bem há pouco quem',
+						'Foram precisos 3 anos para começarmos a falar',
+						'E agora que começamos, não sei se faz muito sentido deixar',
+						'Enquanto houver 1% de chance...',
+						'Vou tentar a minha sorte 👀',
+						'E se calhar isto até é demais',
+						'Mas ao menos estou a tentar',
+						'Sei que ficou muito por fazer...',
+						'E por dizer...',
+						'Ainda não comemos os crepes 🥞',
+						'Nem a picanha...',
+						'Não vimos Elemental 🔥🚿',
+						'Nem fizemos a sessão de fotos',
+						'E mais importante...',
+						'Ainda não me ensinaste as tuas receitas',
+						'Sem esquecer do pain au chocolat, claro!',
+						'E sei que ainda ficou muito mais por fazer...',
+						'Que se quiseres eu quero fazer contigo',
+						'És mesmo especial, e sei que errei contigo',
+						'E por isso Adriana...',
+					];
+
+					// Criar slides
+					textos.forEach((texto, index) => {
+						const slide = document.createElement('div');
+						slide.className = 'slide';
+						slide.innerHTML = `
+			                            <div class="slide-content">
+			                                ${texto}
+			                            </div>
+			                        `;
+						slide.style.transform = `translateX(${index * 100}%)`;
+						slidesContainer.appendChild(slide);
+					});
+
+					// Criar barras de progresso
+					textos.forEach((_, index) => {
+						const progressBar = document.createElement('div');
+						progressBar.className = 'progress-bar';
+						progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
+						progressContainer.appendChild(progressBar);
+					});
+
+					let currentSlide = 0;
+					const slides = document.querySelectorAll('.slide');
+					let isAnimating = false;
+					let finalSectionShown = false;
+					let storyTimeout;
+
+					// Funções atualizadas
+
+					function updateProgressBars(instant = false) {
+						const progressBars =
+							document.querySelectorAll('.progress-bar-fill');
+
+						progressBars.forEach((bar, index) => {
+							// Reset all transitions and styles first
+							bar.style.transition = 'none';
+							bar.style.width = '0%';
+
+							// Force reflow to ensure styles are applied
+							bar.offsetHeight;
+
+							if (index < currentSlide) {
+								// Previous slides - fully filled
+								bar.style.width = '100%';
+							} else if (index === currentSlide) {
+								// Current slide
+								if (!instant) {
+									bar.style.transition = `width linear ${
+										STORY_DURATION / 1000
+									}s`;
+									requestAnimationFrame(() => {
+										bar.style.width = '100%';
+									});
+								}
+							}
+							// Slides after current remain at 0%
+						});
+					}
+
+					function showPrevSlide() {
+						if (currentSlide <= 0 || isAnimating) return;
+
+						isAnimating = true;
+						currentSlide--;
+
+						// Update slide positions
+						slides.forEach((slide, index) => {
+							slide.style.transform = `translateX(${
+								(index - currentSlide) * 100
+							}%)`;
+						});
+
+						// Clear existing timer and reset progress bars
+						clearTimeout(storyTimeout);
+
+						// Reset e iniciar novo timer com progress bars
+						updateProgressBars(false);
+						startStoryTimer();
+
+						setTimeout(() => {
+							isAnimating = false;
+						}, 500);
+					}
+
+					function showNextSlide() {
+						if (currentSlide >= slides.length - 1 || isAnimating) return;
+
+						isAnimating = true;
+						currentSlide++;
+
+						// Update slide positions
+						slides.forEach((slide, index) => {
+							slide.style.transform = `translateX(${
+								(index - currentSlide) * 100
+							}%)`;
+						});
+
+						// Clear existing timer and reset progress bars
+						clearTimeout(storyTimeout);
+
+						// Reset e iniciar novo timer com progress bars
+						updateProgressBars(false);
+						startStoryTimer();
+
+						setTimeout(() => {
+							isAnimating = false;
+						}, 500);
+					}
+
+					function startStoryTimer() {
+						// Clear any existing timeout
+						clearTimeout(storyTimeout);
+
+						// Set new timeout
+						storyTimeout = setTimeout(() => {
+							if (currentSlide < slides.length - 1) {
+								showNextSlide();
+							} else {
+								showFinalSection();
+							}
+						}, STORY_DURATION);
+					}
+
+					// Atualizar progress bar e timer
+					// Remova as chamadas abaixo para evitar reset imediato
+					// updateProgressBars(true);
+					// startStoryTimer();
+
+					// Chamar updateProgressBars(false) e startStoryTimer dentro de requestAnimationFrame
+					requestAnimationFrame(() => {
+						updateProgressBars(false);
+						startStoryTimer();
+					});
+
+					function showFinalSection() {
+						if (finalSectionShown) return; // Se a seção final já foi exibida, não faz nada
+						finalSectionShown = true; // Define a flag para evitar futuras execuções
+
+						slidesContainer.style.display = 'none';
+						finalSection.style.display = 'flex';
+						const indicators = document.querySelector('.slide-indicators');
+						if (indicators) indicators.style.display = 'none';
+
+						// Criar e animar o conteúdo final
+						const finalContent = document.createElement('div');
+						finalContent.className = 'final-content';
+						finalContent.innerHTML = `
+			                            <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+			                            <div class="buttons">
+			                                <button id="btnSim">Sim 👀</button>
+			                                <button id="btnNao">Não</button>
+			                            </div>
+			                        `;
+						finalSection.appendChild(finalContent);
+
+						// Recriar event listeners para os botões
+						initializeButtons();
+					}
+
+					// Configurar navegação por clique nas áreas
+					const nextArea = document.getElementById('nextArea');
+					const prevArea = document.getElementById('prevArea');
+
+					nextArea.addEventListener('click', () => {
+						if (currentSlide < slides.length - 1) {
+							showNextSlide();
+						} else {
+							showFinalSection();
+						}
+					});
+					prevArea.addEventListener('click', showPrevSlide);
+
+					// *** Integração do Novo Código de Eventos de Toque ***
+					// Variáveis para manipulação de toque
+					let touchStartX = 0;
+					let touchStartY = 0;
+					let touchEndX = 0;
+					let touchEndY = 0;
+
+					slidesContainer.addEventListener('touchstart', (e) => {
+						touchStartX = e.touches[0].clientX;
+						touchStartY = e.touches[0].clientY;
+						clearTimeout(storyTimeout); // Pausa o timer da história enquanto está tocando
+					});
+
+					slidesContainer.addEventListener(
+						'touchmove',
+						(e) => {
+							touchEndX = e.touches[0].clientX;
+							touchEndY = e.touches[0].clientY;
+
+							// Previne o scroll padrão quando o gesto é predominantemente horizontal
+							const diffX = Math.abs(touchEndX - touchStartX);
+							const diffY = Math.abs(touchEndY - touchStartY);
+
+							if (diffX > diffY) {
+								e.preventDefault();
+							}
+						},
+						{passive: false}
+					);
+
+					slidesContainer.addEventListener('touchend', (e) => {
+						touchEndX = e.changedTouches[0].clientX;
+						touchEndY = e.changedTouches[0].clientY;
+
+						const diffX = touchStartX - touchEndX;
+						const diffY = Math.abs(touchEndY - touchStartY);
+
+						// Verifica se o gesto foi mais horizontal do que vertical e se a movimentação foi significativa
+						const minSwipeDistance = 50; // Distância mínima para considerar um swipe
+
+						if (Math.abs(diffX) > diffY && Math.abs(diffX) > minSwipeDistance) {
+							if (diffX > 0) {
+								// Swipe para a esquerda - vai para o próximo slide
+								if (currentSlide < slides.length - 1) {
+									showNextSlide();
+								} else {
+									showFinalSection();
+								}
+							} else {
+								// Swipe para a direita - vai para o slide anterior
+								showPrevSlide();
+							}
+						} else {
+							// Se não for um swipe claro, retoma o timer
+							startStoryTimer();
+						}
+					});
+
+					// Pausar histórias quando a aba não estiver visível
+					document.addEventListener('visibilitychange', () => {
+						if (document.hidden) {
+							clearTimeout(storyTimeout);
+						} else {
+							startStoryTimer();
+						}
+					});
+				}
+
+				// Função para criar o voucher
+				function createVoucher() {
+					const voucherContent = `
+			===============================
+			VALE ENCONTRO NO "SEI LÁ"
+			===============================
+			Data: ${new Date().toLocaleDateString()}
+			Hora: 19:00
+			Local: Sei Lá
+			===============================
+			Válido para: Um encontro especial
+			==============================
+			                `;
+
+					const blob = new Blob([voucherContent], {type: 'text/plain'});
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = 'vale_encontro.txt';
+					a.click();
+					window.URL.revokeObjectURL(url);
+				}
+
+				// Função para inicializar os event listeners dos botões na seção final
+				function initializeButtons() {
+					const naoButton = document.getElementById('btnNao');
+					let scale = 1;
+					let clickCount = 0;
+					const messages = [
+						'Tens a certeza? 🤨',
+						'Mesmo a certeza? 😟',
+						'Pensa só mais um bocadinho... 🤔',
+						'Vaaaaaa lááááá! 😅',
+						'Só mais uma chance! 🙏',
+						'De certeza? 🥺',
+						'Não sejas assim... 😢',
+						'😢',
+					];
+
+					naoButton.addEventListener('click', () => {
+						if (clickCount < messages.length) {
+							naoButton.textContent = messages[clickCount];
+							scale *= 0.8;
+							naoButton.style.transform = `scale(${scale})`;
+							clickCount++;
+						}
+					});
+
+					const btnSim = document.getElementById('btnSim');
+					btnSim.addEventListener('click', () => {
+						if (typeof Fireworks === 'undefined') {
+							console.error('Fireworks não está definido.');
+							return;
+						}
+
+						const container = document.getElementById('fireworks');
+						const fireworksInstance = new Fireworks(container, {
+							speed: 2,
+							acceleration: 1.05,
+							friction: 0.98,
+							gravity: 1.5,
+							particles: 50,
+							trace: 3,
+							explosion: 5,
+							autoresize: true,
+							brightness: {
+								min: 50,
+								max: 80,
+							},
+							decay: {
+								min: 0.015,
+								max: 0.03,
+							},
+							boundaries: {
+								x: 50,
+								y: 50,
+							},
+							sound: {
+								enable: false,
+							},
+						});
+						fireworksInstance.start();
+
+						setTimeout(() => {
+							fireworksInstance.stop();
+						}, 5000);
+
+						// Atualizar o conteúdo final com nova mensagem e botão surpresa
+						finalSection.innerHTML = `
+			                            <div class="final-content">
+			                                <div class="question">Vamooos! </div>
+			                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+			                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+			                                <button id="surpriseBtn" >Mais uma coisa 🎁</button>
+			                            </div>
+			                        `;
+
+						// Adicionar event listener para o botão surpresa
+						document
+							.getElementById('surpriseBtn')
+							.addEventListener('click', createVoucher);
+					});
+				}
+			});
+		</script>
+	</body>
+</html>
