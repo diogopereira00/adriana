@@ -351,6 +351,26 @@
 				background: transparent;
 			}
 
+			/* Botão de Controle de Som */
+			.sound-control {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				background: rgba(0, 0, 0, 0.5);
+				border: none;
+				border-radius: 50%;
+				padding: 10px;
+				cursor: pointer;
+				font-size: 1.5rem;
+				color: white;
+				z-index: 1001; /* Superior ao restante do conteúdo */
+				transition: background 0.3s ease;
+			}
+
+			.sound-control:hover {
+				background: rgba(0, 0, 0, 0.7);
+			}
+
 			/* Media Query para dispositivos com largura máxima de 600px */
 			@media (max-width: 600px) {
 				.final-content {
@@ -383,6 +403,12 @@
 		</script>
 	</head>
 	<body>
+		<!-- Botão de Controle de Som -->
+		<button id="soundControl" class="sound-control">🔊</button>
+
+		<!-- Elemento de Áudio para a Música de Fundo -->
+		<audio id="backgroundMusic" src="musica.mp3" preload="auto"></audio>
+
 		<!-- Match Animation Container -->
 		<div class="match-container">
 			<!-- Centralizar conteúdo -->
@@ -433,6 +459,64 @@
 				const progressContainer = document.querySelector('.progress-container');
 				const finalSection = document.querySelector('.final-section');
 
+				// Seleção do elemento de áudio
+				const backgroundMusic = document.getElementById('backgroundMusic');
+
+				// Seleção do botão de controle de som
+				const soundControlButton = document.getElementById('soundControl');
+
+				// Função para atualizar o ícone do botão
+				function updateSoundIcon() {
+					if (backgroundMusic.muted || backgroundMusic.volume === 0) {
+						soundControlButton.textContent = '🔇'; // Ícone de som desativado
+					} else if (
+						backgroundMusic.volume > 0 &&
+						backgroundMusic.volume <= 0.5
+					) {
+						soundControlButton.textContent = '🔉'; // Ícone de som baixo
+					} else {
+						soundControlButton.textContent = '🔊'; // Ícone de som alto
+					}
+				}
+
+				// Inicializar o ícone do botão
+				updateSoundIcon();
+
+				// Função para reproduzir a música de fundo
+				function playBackgroundMusic() {
+					backgroundMusic.volume = 0.3; // 30% do volume
+					const playPromise = backgroundMusic.play();
+
+					if (playPromise !== undefined) {
+						playPromise
+							.then(() => {
+								// Reprodução automática sucedida
+							})
+							.catch((error) => {
+								// Autoplay foi bloqueado. Você pode iniciar a reprodução após uma interação do usuário.
+								console.warn('Autoplay foi bloqueado pelo navegador.');
+							});
+					}
+				}
+
+				// Tentar reproduzir a música de fundo
+				playBackgroundMusic();
+
+				// Adicionar event listener para o botão de controle de som
+				soundControlButton.addEventListener('click', () => {
+					if (backgroundMusic.muted) {
+						backgroundMusic.muted = false;
+						// Restaurar o volume para 30% se estava muteado
+						backgroundMusic.volume = 0.3;
+					} else {
+						backgroundMusic.muted = true;
+					}
+					updateSoundIcon();
+				});
+
+				// Atualizar o ícone quando o volume for alterado via outras interações (se houver)
+				backgroundMusic.addEventListener('volumechange', updateSoundIcon);
+
 				// Animação de entrada dos avatares
 				avatars[0].style.animation = 'slideInLeft 0.8s forwards';
 				avatars[1].style.animation = 'slideInRight 0.8s forwards';
@@ -474,7 +558,7 @@
 
 				// Função para inicializar os slides
 				function initializeSlides() {
-					const STORY_DURATION = 3000; // 5 segundos por história
+					const STORY_DURATION = 5000; // 5 segundos por história
 					const timePassed = getTimeDifference(); // Obtém o tempo decorrido
 
 					const textos = [
@@ -828,7 +912,7 @@
 
 					setTimeout(() => {
 						fireworksInstance.stop();
-					}, 7000);
+					}, 5000);
 
 					// Atualizar o conteúdo final com nova mensagem e botão surpresa
 					finalSection.innerHTML = `
