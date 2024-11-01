@@ -16,14 +16,16 @@
 			}
 
 			body {
-				font-family: 'Poppins', sans-serif; /* Atualizado para Poppins */
+				font-family: 'Poppins', sans-serif;
 				margin: 0;
 				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-				overflow: hidden; /* Remova se não for necessária */
+				overflow: hidden;
 				position: relative;
-				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
+				height: calc(var(--vh, 1vh) * 100);
 				color: white;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+				display: flex;
+				flex-direction: column;
 			}
 
 			#fireworks {
@@ -42,7 +44,7 @@
 				top: 0;
 				left: 0;
 				width: 100%;
-				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
+				height: calc(var(--vh, 1vh) * 100);
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -51,7 +53,9 @@
 				z-index: 1000;
 				opacity: 1;
 				transition: opacity 0.5s ease;
-				gap: 30px; /* Espaçamento entre os elementos */
+				gap: 30px;
+				padding: 20px;
+				box-sizing: border-box;
 			}
 
 			.avatars-container {
@@ -59,6 +63,7 @@
 				justify-content: center;
 				align-items: center;
 				gap: 20px;
+				flex-wrap: wrap;
 			}
 
 			.avatar {
@@ -78,11 +83,12 @@
 			.match-text {
 				font-size: 3rem;
 				font-weight: bold;
-				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
+				font-family: 'Poppins', sans-serif;
 				color: white;
 				opacity: 0;
 				transform: scale(0.5);
 				text-align: center;
+				word-wrap: break-word;
 			}
 
 			/* Centralizar conteúdo */
@@ -91,7 +97,8 @@
 				flex-direction: column;
 				justify-content: center;
 				align-items: center;
-				gap: 30px; /* Espaçamento entre avatares e texto */
+				gap: 30px;
+				max-width: 90%;
 			}
 
 			/* Avatar Animation */
@@ -132,31 +139,37 @@
 
 			/* Modified Slides Container for horizontal scrolling */
 			.slides-container {
-				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
+				height: calc(var(--vh, 1vh) * 100);
 				overflow: hidden;
 				position: relative;
 				opacity: 0;
 				transition: opacity 1s ease;
 				z-index: 2;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 			}
 
 			.slide {
-				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
+				height: 100%;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				position: absolute;
 				width: 100%;
 				transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+				padding: 20px;
+				box-sizing: border-box;
 			}
 
 			.slide-content {
-				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
+				font-family: 'Poppins', sans-serif;
 				font-size: 2rem;
 				text-align: center;
 				padding: 20px;
-				max-width: 80%;
-				font-weight: 400; /* Define o peso da fonte */
+				max-width: 90%;
+				font-weight: 400;
+				word-wrap: break-word;
 			}
 
 			/* Modified progress bar styles */
@@ -169,6 +182,7 @@
 				gap: 4px;
 				padding: 0 16px;
 				z-index: 5;
+				box-sizing: border-box;
 			}
 
 			.progress-bar {
@@ -217,7 +231,7 @@
 			/* Estilos refinados para a seção final */
 			.final-section {
 				display: none;
-				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
+				height: calc(var(--vh, 1vh) * 100);
 				justify-content: center;
 				align-items: center;
 				flex-direction: column;
@@ -230,10 +244,11 @@
 					rgba(255, 154, 158, 0.8) 0%,
 					rgba(250, 208, 196, 0.8) 100%
 				);
+				box-sizing: border-box;
 			}
 
 			.final-content {
-				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
+				font-family: 'Poppins', sans-serif;
 				opacity: 0;
 				transform: scale(0.5);
 				animation: popIn 1s forwards;
@@ -245,6 +260,7 @@
 				border: 1px solid rgba(255, 255, 255, 0.2);
 				max-width: 90%;
 				width: 400px;
+				box-sizing: border-box;
 			}
 
 			@keyframes popIn {
@@ -265,7 +281,7 @@
 			}
 
 			.question {
-				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
+				font-family: 'Poppins', sans-serif;
 				font-size: 2.5rem;
 				color: white;
 				margin-bottom: 2rem;
@@ -273,6 +289,7 @@
 				text-align: center;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 				animation: pulseText 2s infinite;
+				word-wrap: break-word;
 			}
 
 			@keyframes pulseText {
@@ -294,7 +311,7 @@
 			}
 
 			button {
-				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
+				font-family: 'Poppins', sans-serif;
 				padding: 15px 30px;
 				font-size: 1.2rem;
 				border: none;
@@ -305,6 +322,7 @@
 				transform-origin: center;
 				font-weight: bold;
 				letter-spacing: 1px;
+				box-sizing: border-box;
 			}
 
 			#btnSim {
@@ -353,20 +371,95 @@
 
 			/* Media Query para dispositivos com largura máxima de 600px */
 			@media (max-width: 600px) {
+				.match-text {
+					font-size: 2rem;
+				}
+
+				.slide-content {
+					font-size: 1.5rem;
+				}
+
+				.question {
+					font-size: 2rem;
+				}
+
 				.final-content {
-					width: auto; /* Remove a largura fixa */
-					max-width: 90%; /* Mantém a largura máxima em 90% da tela */
-					margin: 0 20px; /* Adiciona uma margem de 20px à esquerda e à direita */
-					padding: 2rem; /* Ajusta o padding se necessário */
+					width: auto;
+					max-width: 90%;
+					margin: 0 20px;
+					padding: 2rem;
+				}
+
+				button {
+					font-size: 1rem;
+					padding: 12px 20px;
+				}
+
+				.avatars-container {
+					gap: 15px;
+				}
+
+				.avatar {
+					width: 80px;
+					height: 80px;
+				}
+
+				.buttons {
+					gap: 1rem;
 				}
 			}
 
-			/* Media Query adicional para telas muito pequenas (opcional) */
+			/* Media Query adicional para telas muito pequenas (máx 400px) */
 			@media (max-width: 400px) {
-				.final-content {
-					margin: 0 10px; /* Margem menor para telas muito pequenas */
-					padding: 1.5rem; /* Reduz o padding se necessário */
+				.match-text {
+					font-size: 1.5rem;
 				}
+
+				.slide-content {
+					font-size: 1.2rem;
+				}
+
+				.question {
+					font-size: 1.8rem;
+				}
+
+				.final-content {
+					margin: 0 10px;
+					padding: 1.5rem;
+				}
+
+				button {
+					font-size: 0.9rem;
+					padding: 10px 16px;
+				}
+
+				.avatar {
+					width: 60px;
+					height: 60px;
+				}
+
+				.match-container {
+					gap: 20px;
+				}
+
+				.match-content {
+					gap: 20px;
+				}
+			}
+
+			/* Ajustes para evitar overflow vertical */
+			* {
+				box-sizing: border-box;
+			}
+
+			html,
+			body,
+			#fireworks,
+			.match-container,
+			.slides-container,
+			.final-section {
+				max-height: 100vh;
+				overflow: hidden;
 			}
 		</style>
 		<!-- Script para definir a variável --vh -->
@@ -511,10 +604,10 @@
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-			                        <div class="slide-content">
-			                            ${texto}
-			                        </div>
-			                    `;
+                            <div class="slide-content">
+                                ${texto}
+                            </div>
+                        `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -648,12 +741,12 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-			                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
-			                        <div class="buttons">
-			                            <button id="btnSim">Sim 👀</button>
-			                            <button id="btnNao">Não</button>
-			                        </div>
-			                    `;
+                            <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+                            <div class="buttons">
+                                <button id="btnSim">Sim 👀</button>
+                                <button id="btnNao">Não</button>
+                            </div>
+                        `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -740,111 +833,111 @@
 						}
 					});
 				}
-			});
 
-			// Função para criar o voucher
-			function createVoucher() {
-				const voucherContent = `
-			===============================
-			VALE ENCONTRO NO "SEI LÁ"
-			===============================
-			Data: ${new Date().toLocaleDateString()}
-			Hora: 19:00
-			Local: Sei Lá
-			===============================
-			Válido para: Um encontro especial
-			==============================
-			                `;
+				// Função para criar o voucher
+				function createVoucher() {
+					const voucherContent = `
+===============================
+VALE ENCONTRO NO "SEI LÁ"
+===============================
+Data: ${new Date().toLocaleDateString()}
+Hora: 19:00
+Local: Sei Lá
+===============================
+Válido para: Um encontro especial
+==============================
+                `;
 
-				const blob = new Blob([voucherContent], {type: 'text/plain'});
-				const url = window.URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = 'vale_encontro.txt';
-				a.click();
-				window.URL.revokeObjectURL(url);
-			}
+					const blob = new Blob([voucherContent], {type: 'text/plain'});
+					const url = window.URL.createObjectURL(blob);
+					const a = document.createElement('a');
+					a.href = url;
+					a.download = 'vale_encontro.txt';
+					a.click();
+					window.URL.revokeObjectURL(url);
+				}
 
-			// Função para inicializar os event listeners dos botões na seção final
-			function initializeButtons() {
-				const naoButton = document.getElementById('btnNao');
-				let scale = 1;
-				let clickCount = 0;
-				const messages = [
-					'Tens a certeza? 🤨',
-					'Mesmo a certeza? 😟',
-					'Pensa só mais um bocadinho... 🤔',
-					'Vaaaaaa lááááá! 😅',
-					'Só mais uma chance! 🙏',
-					'De certeza? 🥺',
-					'Não sejas assim... 😢',
-					'😢',
-				];
+				// Função para inicializar os event listeners dos botões na seção final
+				function initializeButtons() {
+					const naoButton = document.getElementById('btnNao');
+					let scale = 1;
+					let clickCount = 0;
+					const messages = [
+						'Tens a certeza? 🤨',
+						'Mesmo a certeza? 😟',
+						'Pensa só mais um bocadinho... 🤔',
+						'Vaaaaaa lááááá! 😅',
+						'Só mais uma chance! 🙏',
+						'De certeza? 🥺',
+						'Não sejas assim... 😢',
+						'😢',
+					];
 
-				naoButton.addEventListener('click', () => {
-					if (clickCount < messages.length) {
-						naoButton.textContent = messages[clickCount];
-						scale *= 0.8;
-						naoButton.style.transform = `scale(${scale})`;
-						clickCount++;
-					}
-				});
-
-				const btnSim = document.getElementById('btnSim');
-				btnSim.addEventListener('click', () => {
-					if (typeof Fireworks === 'undefined') {
-						console.error('Fireworks não está definido.');
-						return;
-					}
-
-					const container = document.getElementById('fireworks');
-					const fireworksInstance = new Fireworks(container, {
-						speed: 2,
-						acceleration: 1.05,
-						friction: 0.98,
-						gravity: 1.5,
-						particles: 50,
-						trace: 3,
-						explosion: 5,
-						autoresize: true,
-						brightness: {
-							min: 50,
-							max: 80,
-						},
-						decay: {
-							min: 0.015,
-							max: 0.03,
-						},
-						boundaries: {
-							x: 50,
-							y: 50,
-						},
-						sound: {
-							enable: false,
-						},
+					naoButton.addEventListener('click', () => {
+						if (clickCount < messages.length) {
+							naoButton.textContent = messages[clickCount];
+							scale *= 0.8;
+							naoButton.style.transform = `scale(${scale})`;
+							clickCount++;
+						}
 					});
-					fireworksInstance.start();
 
-					setTimeout(() => {
-						fireworksInstance.stop();
-					}, 5000);
+					const btnSim = document.getElementById('btnSim');
+					btnSim.addEventListener('click', () => {
+						if (typeof Fireworks === 'undefined') {
+							console.error('Fireworks não está definido.');
+							return;
+						}
 
-					// Atualizar o conteúdo final com nova mensagem e botão surpresa
-					finalSection.innerHTML = `
-			                        <div class="final-content">
-			                            <div class="question">Vamooos! </div>
-			                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-			                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-			                            <button id="surpriseBtn" >Mais uma coisa 🎁</button>
-			                        </div>
-			                    `;
+						const container = document.getElementById('fireworks');
+						const fireworksInstance = new Fireworks(container, {
+							speed: 2,
+							acceleration: 1.05,
+							friction: 0.98,
+							gravity: 1.5,
+							particles: 50,
+							trace: 3,
+							explosion: 5,
+							autoresize: true,
+							brightness: {
+								min: 50,
+								max: 80,
+							},
+							decay: {
+								min: 0.015,
+								max: 0.03,
+							},
+							boundaries: {
+								x: 50,
+								y: 50,
+							},
+							sound: {
+								enable: false,
+							},
+						});
+						fireworksInstance.start();
 
-					// Adicionar event listener para o botão surpresa
-					document
-						.getElementById('surpriseBtn')
-						.addEventListener('click', createVoucher);
-				});
-			}
+						setTimeout(() => {
+							fireworksInstance.stop();
+						}, 5000);
+
+						// Atualizar o conteúdo final com nova mensagem e botão surpresa
+						finalSection.innerHTML = `
+                            <div class="final-content">
+                                <div class="question">Vamooos! </div>
+                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                                <button id="surpriseBtn">Mais uma coisa 🎁</button>
+                            </div>
+                        `;
+
+						// Adicionar event listener para o botão surpresa
+						document
+							.getElementById('surpriseBtn')
+							.addEventListener('click', createVoucher);
+					});
+				}
+			});
 		</script>
 	</body>
 </html>
