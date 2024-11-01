@@ -5,13 +5,18 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Um convite especial</title>
 		<style>
+			/* Variável CSS para a altura da viewport */
+			:root {
+				--vh: 1vh;
+			}
+
 			body {
 				font-family: Arial, sans-serif;
 				margin: 0;
 				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
-				overflow: hidden;
+				overflow: hidden; /* Remova se não for necessária */
 				position: relative;
-				height: 100vh;
+				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
 				color: white;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 			}
@@ -32,7 +37,7 @@
 				top: 0;
 				left: 0;
 				width: 100%;
-				height: 100vh;
+				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -121,7 +126,7 @@
 
 			/* Modified Slides Container for horizontal scrolling */
 			.slides-container {
-				height: 100vh;
+				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
 				overflow: hidden;
 				position: relative;
 				opacity: 0;
@@ -130,7 +135,7 @@
 			}
 
 			.slide {
-				height: 100vh;
+				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
 				display: flex;
 				justify-content: center;
 				align-items: center;
@@ -204,7 +209,7 @@
 			/* Estilos refinados para a seção final */
 			.final-section {
 				display: none;
-				height: 100vh;
+				height: calc(var(--vh, 1vh) * 100); /* Use a variável --vh */
 				justify-content: center;
 				align-items: center;
 				flex-direction: column;
@@ -353,6 +358,18 @@
 				}
 			}
 		</style>
+		<!-- Script para definir a variável --vh -->
+		<script>
+			function setVh() {
+				let vh = window.innerHeight * 0.01;
+				document.documentElement.style.setProperty('--vh', `${vh}px`);
+			}
+
+			// Inicializa a variável --vh quando a página é carregada
+			window.addEventListener('load', setVh);
+			// Atualiza a variável --vh quando a janela é redimensionada
+			window.addEventListener('resize', setVh);
+		</script>
 	</head>
 	<body>
 		<!-- Match Animation Container -->
@@ -484,10 +501,10 @@
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-			                            <div class="slide-content">
-			                                ${texto}
-			                            </div>
-			                        `;
+                        <div class="slide-content">
+                            ${texto}
+                        </div>
+                    `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -576,7 +593,7 @@
 							}%)`;
 						});
 
-						// Clear existing timer and reset progress bars
+						// Clear existing timer e reset progress bars
 						clearTimeout(storyTimeout);
 
 						// Reset e iniciar novo timer com progress bars
@@ -603,11 +620,6 @@
 					}
 
 					// Atualizar progress bar e timer
-					// Remova as chamadas abaixo para evitar reset imediato
-					// updateProgressBars(true);
-					// startStoryTimer();
-
-					// Chamar updateProgressBars(false) e startStoryTimer dentro de requestAnimationFrame
 					requestAnimationFrame(() => {
 						updateProgressBars(false);
 						startStoryTimer();
@@ -626,12 +638,12 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-			                            <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
-			                            <div class="buttons">
-			                                <button id="btnSim">Sim 👀</button>
-			                                <button id="btnNao">Não</button>
-			                            </div>
-			                        `;
+                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+                        <div class="buttons">
+                            <button id="btnSim">Sim 👀</button>
+                            <button id="btnNao">Não</button>
+                        </div>
+                    `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -722,16 +734,16 @@
 				// Função para criar o voucher
 				function createVoucher() {
 					const voucherContent = `
-			===============================
-			VALE ENCONTRO NO "SEI LÁ"
-			===============================
-			Data: ${new Date().toLocaleDateString()}
-			Hora: 19:00
-			Local: Sei Lá
-			===============================
-			Válido para: Um encontro especial
-			==============================
-			                `;
+===============================
+VALE ENCONTRO NO "SEI LÁ"
+===============================
+Data: ${new Date().toLocaleDateString()}
+Hora: 19:00
+Local: Sei Lá
+===============================
+Válido para: Um encontro especial
+==============================
+                `;
 
 					const blob = new Blob([voucherContent], {type: 'text/plain'});
 					const url = window.URL.createObjectURL(blob);
@@ -808,13 +820,13 @@
 
 						// Atualizar o conteúdo final com nova mensagem e botão surpresa
 						finalSection.innerHTML = `
-			                            <div class="final-content">
-			                                <div class="question">Vamooos! </div>
-			                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-			                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-			                                <button id="surpriseBtn" >Mais uma coisa 🎁</button>
-			                            </div>
-			                        `;
+                        <div class="final-content">
+                            <div class="question">Vamooos! </div>
+                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                            <button id="surpriseBtn" >Mais uma coisa 🎁</button>
+                        </div>
+                    `;
 
 						// Adicionar event listener para o botão surpresa
 						document
