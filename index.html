@@ -364,6 +364,26 @@
 				}
 			}
 
+			/* Animação de pulsação para o botão de música */
+			@keyframes pulseMusicToggle {
+				0% {
+					transform: scale(1);
+					opacity: 1;
+				}
+				50% {
+					transform: scale(1.1);
+					opacity: 0.7;
+				}
+				100% {
+					transform: scale(1);
+					opacity: 1;
+				}
+			}
+
+			.pulse {
+				animation: pulseMusicToggle 2s infinite;
+			}
+
 			/* Estilos para feedback visual ao tocar */
 			.nav-area:active {
 				background: transparent;
@@ -501,8 +521,8 @@
 		</script>
 	</head>
 	<body>
-		<!-- Música de fundo -->
-		<audio id="background-music" src="musica.mp3" autoplay loop></audio>
+		<!-- Música de fundo sem autoplay -->
+		<audio id="background-music" src="musica.mp3" loop></audio>
 
 		<!-- Botão de controle de música -->
 		<button id="music-toggle" aria-label="Controle de Música">🔉</button>
@@ -556,6 +576,8 @@
 				const slidesContainer = document.querySelector('.slides-container');
 				const progressContainer = document.querySelector('.progress-container');
 				const finalSection = document.querySelector('.final-section');
+				const backgroundMusic = document.getElementById('background-music');
+				const musicToggle = document.getElementById('music-toggle');
 
 				// Animação de entrada dos avatares
 				avatars[0].style.animation = 'slideInLeft 0.8s forwards';
@@ -969,20 +991,19 @@ Válido para: Um encontro especial
 					});
 				}
 
+				// Função para atualizar o ícone com base no estado da música
+				function updateIcon() {
+					if (backgroundMusic.paused) {
+						musicToggle.textContent = '🔇'; // Ícone de volume mudo
+						musicToggle.classList.add('pulse'); // Adiciona a animação de pulsação
+					} else {
+						musicToggle.textContent = '🔉'; // Ícone de volume alto
+						musicToggle.classList.remove('pulse'); // Remove a animação de pulsação
+					}
+				}
+
 				// Função para controlar a música e atualizar o ícone do botão
 				function initializeMusicControl() {
-					const musicToggle = document.getElementById('music-toggle');
-					const backgroundMusic = document.getElementById('background-music');
-
-					// Função para atualizar o ícone com base no estado da música
-					function updateIcon() {
-						if (backgroundMusic.paused) {
-							musicToggle.textContent = '🔇'; // Ícone de volume mudo
-						} else {
-							musicToggle.textContent = '🔉'; // Ícone de volume alto
-						}
-					}
-
 					// Inicializa o ícone com base no estado inicial da música
 					updateIcon();
 
@@ -1001,8 +1022,33 @@ Válido para: Um encontro especial
 					backgroundMusic.addEventListener('pause', updateIcon);
 				}
 
+				// Função para iniciar a música após a primeira interação do usuário
+				function iniciarMusicaDepoisInteracao() {
+					backgroundMusic
+						.play()
+						.then(() => {
+							updateIcon();
+						})
+						.catch((error) => {
+							console.log('Reprodução de música bloqueada:', error);
+						});
+					// Remover os listeners após a primeira interação
+					document.removeEventListener('click', iniciarMusicaDepoisInteracao);
+					document.removeEventListener(
+						'touchstart',
+						iniciarMusicaDepoisInteracao
+					);
+				}
+
+				// Adicionar listeners para iniciar a música na primeira interação
+				document.addEventListener('click', iniciarMusicaDepoisInteracao);
+				document.addEventListener('touchstart', iniciarMusicaDepoisInteracao);
+
 				// Inicializa os controles de música
 				initializeMusicControl();
+
+				// Inicializa os slides
+				// (Os slides serão iniciados após a animação do match)
 			});
 		</script>
 	</body>
