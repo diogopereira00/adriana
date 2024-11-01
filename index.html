@@ -371,6 +371,25 @@
 				background: rgba(0, 0, 0, 0.7);
 			}
 
+			/* Feedback de Som */
+			.sound-status {
+				position: fixed;
+				top: 60px; /* Ajuste conforme necessário */
+				right: 20px;
+				color: white;
+				font-size: 0.9rem;
+				background: rgba(0, 0, 0, 0.5);
+				padding: 5px 10px;
+				border-radius: 5px;
+				z-index: 1001;
+				transition: opacity 0.3s ease;
+			}
+
+			.sound-status.hidden {
+				opacity: 0;
+				pointer-events: none;
+			}
+
 			/* Media Query para dispositivos com largura máxima de 600px */
 			@media (max-width: 600px) {
 				.final-content {
@@ -403,8 +422,16 @@
 		</script>
 	</head>
 	<body>
-		<!-- Botão de Controle de Som -->
-		<button id="soundControl" class="sound-control">🔊</button>
+		<!-- Botão de Controle de Som com Feedback -->
+		<button
+			id="soundControl"
+			class="sound-control"
+			aria-label="Controle de Som"
+			title="Mute/Unmute"
+		>
+			🔊
+		</button>
+		<span id="soundStatus" class="sound-status">Clique para ouvir música</span>
 
 		<!-- Elemento de Áudio para a Música de Fundo -->
 		<audio id="backgroundMusic" src="musica.mp3" preload="auto"></audio>
@@ -465,6 +492,12 @@
 				// Seleção do botão de controle de som
 				const soundControlButton = document.getElementById('soundControl');
 
+				// Seleção do elemento de feedback
+				const soundStatus = document.getElementById('soundStatus');
+
+				// Flag para verificar se a música já foi iniciada
+				let musicStarted = false;
+
 				// Função para atualizar o ícone do botão
 				function updateSoundIcon() {
 					if (backgroundMusic.muted || backgroundMusic.volume === 0) {
@@ -485,33 +518,32 @@
 				// Função para reproduzir a música de fundo
 				function playBackgroundMusic() {
 					backgroundMusic.volume = 0.3; // 30% do volume
-					const playPromise = backgroundMusic.play();
-
-					if (playPromise !== undefined) {
-						playPromise
-							.then(() => {
-								// Reprodução automática sucedida
-							})
-							.catch((error) => {
-								// Autoplay foi bloqueado. Você pode iniciar a reprodução após uma interação do usuário.
-								console.warn('Autoplay foi bloqueado pelo navegador.');
-							});
-					}
+					backgroundMusic
+						.play()
+						.then(() => {
+							musicStarted = true;
+							updateSoundIcon();
+							// Ocultar o feedback após a reprodução iniciar
+							soundStatus.classList.add('hidden');
+						})
+						.catch((error) => {
+							console.warn('Reprodução da música falhou:', error);
+						});
 				}
-
-				// Tentar reproduzir a música de fundo
-				playBackgroundMusic();
 
 				// Adicionar event listener para o botão de controle de som
 				soundControlButton.addEventListener('click', () => {
-					if (backgroundMusic.muted) {
-						backgroundMusic.muted = false;
-						// Restaurar o volume para 30% se estava muteado
-						backgroundMusic.volume = 0.3;
+					if (!musicStarted) {
+						// Iniciar a música na primeira interação
+						playBackgroundMusic();
 					} else {
-						backgroundMusic.muted = true;
+						// Alternar mute/unmute em interações subsequentes
+						backgroundMusic.muted = !backgroundMusic.muted;
+						if (!backgroundMusic.muted && backgroundMusic.volume === 0) {
+							backgroundMusic.volume = 0.3; // Restaurar o volume se estava zero
+						}
+						updateSoundIcon();
 					}
-					updateSoundIcon();
 				});
 
 				// Atualizar o ícone quando o volume for alterado via outras interações (se houver)
