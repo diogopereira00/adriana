@@ -4,6 +4,11 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Um convite especial</title>
+		<!-- Importar a fonte Poppins do Google Fonts -->
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
 			/* Variável CSS para a altura da viewport */
 			:root {
@@ -11,7 +16,7 @@
 			}
 
 			body {
-				font-family: Arial, sans-serif;
+				font-family: 'Poppins', sans-serif; /* Atualizado para Poppins */
 				margin: 0;
 				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
 				overflow: hidden; /* Remova se não for necessária */
@@ -73,6 +78,7 @@
 			.match-text {
 				font-size: 3rem;
 				font-weight: bold;
+				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
 				color: white;
 				opacity: 0;
 				transform: scale(0.5);
@@ -145,10 +151,12 @@
 			}
 
 			.slide-content {
+				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
 				font-size: 2rem;
 				text-align: center;
 				padding: 20px;
 				max-width: 80%;
+				font-weight: 400; /* Define o peso da fonte */
 			}
 
 			/* Modified progress bar styles */
@@ -225,6 +233,7 @@
 			}
 
 			.final-content {
+				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
 				opacity: 0;
 				transform: scale(0.5);
 				animation: popIn 1s forwards;
@@ -256,6 +265,7 @@
 			}
 
 			.question {
+				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
 				font-size: 2.5rem;
 				color: white;
 				margin-bottom: 2rem;
@@ -284,6 +294,7 @@
 			}
 
 			button {
+				font-family: 'Poppins', sans-serif; /* Garante que Poppins seja usada */
 				padding: 15px 30px;
 				font-size: 1.2rem;
 				border: none;
@@ -463,7 +474,7 @@
 
 				// Função para inicializar os slides
 				function initializeSlides() {
-					const STORY_DURATION = 5000; // 5 segundos por história
+					const STORY_DURATION = 3000; // 5 segundos por história
 					const timePassed = getTimeDifference(); // Obtém o tempo decorrido
 
 					const textos = [
@@ -501,10 +512,10 @@
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-                        <div class="slide-content">
-                            ${texto}
-                        </div>
-                    `;
+			                        <div class="slide-content">
+			                            ${texto}
+			                        </div>
+			                    `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -638,12 +649,12 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
-                        <div class="buttons">
-                            <button id="btnSim">Sim 👀</button>
-                            <button id="btnNao">Não</button>
-                        </div>
-                    `;
+			                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+			                        <div class="buttons">
+			                            <button id="btnSim">Sim 👀</button>
+			                            <button id="btnNao">Não</button>
+			                        </div>
+			                    `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -730,111 +741,111 @@
 						}
 					});
 				}
-
-				// Função para criar o voucher
-				function createVoucher() {
-					const voucherContent = `
-===============================
-VALE ENCONTRO NO "SEI LÁ"
-===============================
-Data: ${new Date().toLocaleDateString()}
-Hora: 19:00
-Local: Sei Lá
-===============================
-Válido para: Um encontro especial
-==============================
-                `;
-
-					const blob = new Blob([voucherContent], {type: 'text/plain'});
-					const url = window.URL.createObjectURL(blob);
-					const a = document.createElement('a');
-					a.href = url;
-					a.download = 'vale_encontro.txt';
-					a.click();
-					window.URL.revokeObjectURL(url);
-				}
-
-				// Função para inicializar os event listeners dos botões na seção final
-				function initializeButtons() {
-					const naoButton = document.getElementById('btnNao');
-					let scale = 1;
-					let clickCount = 0;
-					const messages = [
-						'Tens a certeza? 🤨',
-						'Mesmo a certeza? 😟',
-						'Pensa só mais um bocadinho... 🤔',
-						'Vaaaaaa lááááá! 😅',
-						'Só mais uma chance! 🙏',
-						'De certeza? 🥺',
-						'Não sejas assim... 😢',
-						'😢',
-					];
-
-					naoButton.addEventListener('click', () => {
-						if (clickCount < messages.length) {
-							naoButton.textContent = messages[clickCount];
-							scale *= 0.8;
-							naoButton.style.transform = `scale(${scale})`;
-							clickCount++;
-						}
-					});
-
-					const btnSim = document.getElementById('btnSim');
-					btnSim.addEventListener('click', () => {
-						if (typeof Fireworks === 'undefined') {
-							console.error('Fireworks não está definido.');
-							return;
-						}
-
-						const container = document.getElementById('fireworks');
-						const fireworksInstance = new Fireworks(container, {
-							speed: 2,
-							acceleration: 1.05,
-							friction: 0.98,
-							gravity: 1.5,
-							particles: 50,
-							trace: 3,
-							explosion: 5,
-							autoresize: true,
-							brightness: {
-								min: 50,
-								max: 80,
-							},
-							decay: {
-								min: 0.015,
-								max: 0.03,
-							},
-							boundaries: {
-								x: 50,
-								y: 50,
-							},
-							sound: {
-								enable: false,
-							},
-						});
-						fireworksInstance.start();
-
-						setTimeout(() => {
-							fireworksInstance.stop();
-						}, 5000);
-
-						// Atualizar o conteúdo final com nova mensagem e botão surpresa
-						finalSection.innerHTML = `
-                        <div class="final-content">
-                            <div class="question">Vamooos! </div>
-                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-                            <button id="surpriseBtn" >Mais uma coisa 🎁</button>
-                        </div>
-                    `;
-
-						// Adicionar event listener para o botão surpresa
-						document
-							.getElementById('surpriseBtn')
-							.addEventListener('click', createVoucher);
-					});
-				}
 			});
+
+			// Função para criar o voucher
+			function createVoucher() {
+				const voucherContent = `
+			===============================
+			VALE ENCONTRO NO "SEI LÁ"
+			===============================
+			Data: ${new Date().toLocaleDateString()}
+			Hora: 19:00
+			Local: Sei Lá
+			===============================
+			Válido para: Um encontro especial
+			==============================
+			                `;
+
+				const blob = new Blob([voucherContent], {type: 'text/plain'});
+				const url = window.URL.createObjectURL(blob);
+				const a = document.createElement('a');
+				a.href = url;
+				a.download = 'vale_encontro.txt';
+				a.click();
+				window.URL.revokeObjectURL(url);
+			}
+
+			// Função para inicializar os event listeners dos botões na seção final
+			function initializeButtons() {
+				const naoButton = document.getElementById('btnNao');
+				let scale = 1;
+				let clickCount = 0;
+				const messages = [
+					'Tens a certeza? 🤨',
+					'Mesmo a certeza? 😟',
+					'Pensa só mais um bocadinho... 🤔',
+					'Vaaaaaa lááááá! 😅',
+					'Só mais uma chance! 🙏',
+					'De certeza? 🥺',
+					'Não sejas assim... 😢',
+					'😢',
+				];
+
+				naoButton.addEventListener('click', () => {
+					if (clickCount < messages.length) {
+						naoButton.textContent = messages[clickCount];
+						scale *= 0.8;
+						naoButton.style.transform = `scale(${scale})`;
+						clickCount++;
+					}
+				});
+
+				const btnSim = document.getElementById('btnSim');
+				btnSim.addEventListener('click', () => {
+					if (typeof Fireworks === 'undefined') {
+						console.error('Fireworks não está definido.');
+						return;
+					}
+
+					const container = document.getElementById('fireworks');
+					const fireworksInstance = new Fireworks(container, {
+						speed: 2,
+						acceleration: 1.05,
+						friction: 0.98,
+						gravity: 1.5,
+						particles: 50,
+						trace: 3,
+						explosion: 5,
+						autoresize: true,
+						brightness: {
+							min: 50,
+							max: 80,
+						},
+						decay: {
+							min: 0.015,
+							max: 0.03,
+						},
+						boundaries: {
+							x: 50,
+							y: 50,
+						},
+						sound: {
+							enable: false,
+						},
+					});
+					fireworksInstance.start();
+
+					setTimeout(() => {
+						fireworksInstance.stop();
+					}, 7000);
+
+					// Atualizar o conteúdo final com nova mensagem e botão surpresa
+					finalSection.innerHTML = `
+			                        <div class="final-content">
+			                            <div class="question">Vamooos! </div>
+			                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+			                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+			                            <button id="surpriseBtn" >Mais uma coisa 🎁</button>
+			                        </div>
+			                    `;
+
+					// Adicionar event listener para o botão surpresa
+					document
+						.getElementById('surpriseBtn')
+						.addEventListener('click', createVoucher);
+				});
+			}
 		</script>
 	</body>
 </html>
