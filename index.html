@@ -54,7 +54,7 @@
 				opacity: 1;
 				transition: opacity 0.5s ease;
 				gap: 30px;
-				padding: 20px;
+				padding: 10px;
 				box-sizing: border-box;
 			}
 
@@ -400,8 +400,8 @@
 				}
 
 				.avatar {
-					width: 80px;
-					height: 80px;
+					width: 100px;
+					height: 100px;
 				}
 
 				.buttons {
@@ -461,6 +461,31 @@
 				max-height: 100vh;
 				overflow: hidden;
 			}
+
+			/* Estilos para o botão de controle de música */
+			#music-toggle {
+				position: fixed;
+				bottom: 20px;
+				right: 20px;
+				width: 60px;
+				height: 60px;
+				background-color: rgba(0, 0, 0, 0.6);
+				border: none;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				cursor: pointer;
+				z-index: 1001; /* Acima de outros elementos */
+				transition: background-color 0.3s ease, transform 0.3s ease;
+				font-size: 24px; /* Define o tamanho do emoji */
+				color: white; /* Define a cor do emoji */
+			}
+
+			#music-toggle:hover {
+				background-color: rgba(0, 0, 0, 0.8);
+				transform: scale(1.05); /* Adiciona um efeito de zoom no hover */
+			}
 		</style>
 		<!-- Script para definir a variável --vh -->
 		<script>
@@ -476,6 +501,12 @@
 		</script>
 	</head>
 	<body>
+		<!-- Música de fundo -->
+		<audio id="background-music" src="musica.mp3" autoplay loop></audio>
+
+		<!-- Botão de controle de música -->
+		<button id="music-toggle" aria-label="Controle de Música">🔉</button>
+
 		<!-- Match Animation Container -->
 		<div class="match-container">
 			<!-- Centralizar conteúdo -->
@@ -604,10 +635,10 @@
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-                            <div class="slide-content">
-                                ${texto}
-                            </div>
-                        `;
+                        <div class="slide-content">
+                            ${texto}
+                        </div>
+                    `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -741,12 +772,12 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-                            <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
-                            <div class="buttons">
-                                <button id="btnSim">Sim 👀</button>
-                                <button id="btnNao">Não</button>
-                            </div>
-                        `;
+                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+                        <div class="buttons">
+                            <button id="btnSim">Sim 👀</button>
+                            <button id="btnNao">Não</button>
+                        </div>
+                    `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -923,13 +954,13 @@ Válido para: Um encontro especial
 
 						// Atualizar o conteúdo final com nova mensagem e botão surpresa
 						finalSection.innerHTML = `
-                            <div class="final-content">
-                                <div class="question">Vamooos! </div>
-                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-                                <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-                                <button id="surpriseBtn">Mais uma coisa 🎁</button>
-                            </div>
-                        `;
+                        <div class="final-content">
+                            <div class="question">Vamooos! </div>
+                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                            <button id="surpriseBtn">Mais uma coisa 🎁</button>
+                        </div>
+                    `;
 
 						// Adicionar event listener para o botão surpresa
 						document
@@ -937,6 +968,41 @@ Válido para: Um encontro especial
 							.addEventListener('click', createVoucher);
 					});
 				}
+
+				// Função para controlar a música e atualizar o ícone do botão
+				function initializeMusicControl() {
+					const musicToggle = document.getElementById('music-toggle');
+					const backgroundMusic = document.getElementById('background-music');
+
+					// Função para atualizar o ícone com base no estado da música
+					function updateIcon() {
+						if (backgroundMusic.paused) {
+							musicToggle.textContent = '🔇'; // Ícone de volume mudo
+						} else {
+							musicToggle.textContent = '🔉'; // Ícone de volume alto
+						}
+					}
+
+					// Inicializa o ícone com base no estado inicial da música
+					updateIcon();
+
+					// Adiciona o event listener para o botão
+					musicToggle.addEventListener('click', () => {
+						if (backgroundMusic.paused) {
+							backgroundMusic.play();
+						} else {
+							backgroundMusic.pause();
+						}
+						updateIcon();
+					});
+
+					// Atualiza o ícone se a música for pausada ou reproduzida por outros meios
+					backgroundMusic.addEventListener('play', updateIcon);
+					backgroundMusic.addEventListener('pause', updateIcon);
+				}
+
+				// Inicializa os controles de música
+				initializeMusicControl();
 			});
 		</script>
 	</body>
