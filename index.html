@@ -200,10 +200,12 @@
 			.slide-content {
 				font-family: 'Montserrat', sans-serif;
 				font-size: 2rem;
+				font-weight: bold;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
 				text-align: center;
 				padding: 20px;
 				max-width: 90%;
-				font-weight: 400;
 				word-wrap: break-word;
 			}
 
@@ -324,6 +326,16 @@
 				text-align: center;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 				animation: pulseText 2s infinite;
+				word-wrap: break-word;
+			}
+			.question2 {
+				font-family: 'Montserrat', sans-serif;
+				font-size: 2.5rem;
+				color: white;
+				margin-bottom: 2rem;
+				font-weight: bold;
+				text-align: center;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 				word-wrap: break-word;
 			}
 
@@ -455,8 +467,8 @@
 				}
 
 				.avatar {
-					width: 100px;
-					height: 100px;
+					width: 120px;
+					height: 120px;
 				}
 
 				.buttons {
@@ -489,8 +501,8 @@
 				}
 
 				.avatar {
-					width: 60px;
-					height: 60px;
+					width: 120px;
+					height: 120px;
 				}
 
 				.match-container {
@@ -567,17 +579,18 @@
 
 			.ps-message {
 				color: rgba(255, 255, 255);
-				font-size: 0.8rem;
+				font-size: 0.9rem;
 				text-align: center;
 				margin: 0;
 				font-weight: 300;
-				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 				opacity: 0.8;
 				position: absolute;
 				bottom: 200px;
 				left: 50%;
 				transform: translateX(-50%);
 				width: 100%;
+				font-weight: bold;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 			}
 
 			@keyframes pulseButton {
@@ -797,34 +810,41 @@
 
 					const textos = [
 						'"Toda desprevenida portanto 🤣"',
-						'Foi assim que tudo começou a <br>18 de agosto de 2024 ☀️',
-						'De facto já se passou algum tempo',
+						'Foi assim que tudo começou em <br>18 de agosto de 2024 ☀️',
+						'De facto já se passou algum tempo ⏱️',
 						timePassed, // Adiciona a frase dinâmica aqui
-						'E sei que falhei contigo 🙄',
-						'E acredita, que estou mesmo arrependido 😞',
-						'Mas tudo acontece por um motivo...',
+						'Sei que falhei contigo 🙄',
+						'E acredita, estou mesmo arrependido.',
+						'Tens toda a razão para ter perdido o interesse',
+						'Mas tudo acontece por um motivo... 🤔',
 						'E de pressa e bem há pouco quem',
-						'Foram precisos 3 anos para começarmos a falar',
+						'Foram precisos três anos para começarmos a falar',
 						'E agora que começamos, não sei se faz muito sentido deixar 😅',
-						'Enquanto houver 1% de chance...',
-						'Vou tentar a minha sorte 👀',
-						'E se calhar isto até é demais',
-						'Mas ao menos estou a tentar 😅',
-						'Sei que ficou muito por fazer...',
+						'Como alguém disse há uns dias...🤣',
+						'O erro é um trampolim para o sucesso 🚀',
+						'E enquanto houver 1% de chance...',
+						'Eu vou tentar a minha sorte 👀',
+						'Isto se calhar até é demais 😅',
+						'Mas ao menos estou a tentar',
+						'Sei que isto não são as sobremesas do estagiário 😅',
+						'Mas também sei que ficou muito por fazer...',
 						'E por dizer...',
-						'Ainda não comemos os crepes 🥞',
+						'Ainda não fomos comer os crepes 🥞',
 						'Nem a picanha...',
 						'Não vimos Elemental 🌊🔥',
 						'Nem fizemos a sessão de fotos',
 						'E mais importante...',
 						'Ainda não me ensinaste as tuas receitas 🍰',
 						'Sem esquecer do pain au chocolat! 😅',
-						'E as aulas de tenis, claro 🎾',
+						'E das aulas de ténis, claro 🎾',
 						'Sei que ficou muito por fazer...',
 						'Que se quiseres eu quero fazer contigo 🫵🏼',
-						'Sei que errei e estive mal e peço-te desculpa por isso',
-						'És mesmo especial, e não te quero perder 😅',
-						'E por isso Adriana...<br>Desta vez quero fazer melhor.',
+						'Sei que errei, estive mal e peço-te desculpa por isso',
+						'Mas eu preciso da minha estilista particular 🤣',
+						'És mesmo especial, e não te quero perder.',
+						'E por isso Adriana...',
+						'Se me deixares...',
+						'Desta vez quero fazer melhor!',
 					];
 					// Criar slides
 					textos.forEach((texto, index) => {
@@ -968,7 +988,9 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-                      <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+                      <div class="question">Será que estás disposta a dar-me mais uma chance? 🤔<br /></div>
+					 <div style="font-size:0.8rem;" class="question2">Prometo que não te vais arrepender.</div>
+
                       <div class="buttons">
                           <button id="btnSim">Sim 👀</button>
                           <button id="btnNao">Não</button>
@@ -1146,7 +1168,7 @@ Válido para: Um encontro especial
 							gravity: 1.5,
 							particles: 50,
 							trace: 3,
-							explosion: 5,
+							explosion: 6,
 							autoresize: true,
 							brightness: {
 								min: 50,
@@ -1168,14 +1190,14 @@ Válido para: Um encontro especial
 
 						setTimeout(() => {
 							fireworksInstance.stop();
-						}, 5000);
+						}, 50000);
 
 						// Atualizar o conteúdo final com nova mensagem e botão surpresa
 						finalSection.innerHTML = `
                       <div class="final-content">
-                          <div class="question">🫶🏼 </div>
-                          <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-                          <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                          <div style="font-size: 1.7rem;" class="question">🫶🏼 </div>
+                          <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                          <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
                           <button id="surpriseBtn">Mais uma coisa 🎁</button>
                       </div>
                   `;
