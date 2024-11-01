@@ -4,11 +4,12 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Um convite especial</title>
-		<!-- Importar a fonte Poppins do Google Fonts -->
+		<!-- Importar as fontes atualizadas do Google Fonts -->
 		<link
-			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+			href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap"
 			rel="stylesheet"
 		/>
+
 		<style>
 			/* Variável CSS para a altura da viewport */
 			:root {
@@ -16,7 +17,7 @@
 			}
 
 			body {
-				font-family: 'Poppins', sans-serif;
+				font-family: 'Montserrat', sans-serif;
 				margin: 0;
 				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
 				overflow: hidden;
@@ -74,6 +75,7 @@
 				object-fit: cover;
 				opacity: 0;
 				transform: translateX(-100px);
+				box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 			}
 
 			.avatar:last-child {
@@ -81,9 +83,8 @@
 			}
 
 			.match-text {
-				font-size: 3rem;
+				font-size: 3.5rem;
 				font-weight: bold;
-				font-family: 'Poppins', sans-serif;
 				color: white;
 				opacity: 0;
 				transform: scale(0.5);
@@ -116,6 +117,21 @@
 				}
 			}
 
+			@keyframes avatarPulse {
+				0% {
+					transform: scale(1);
+					box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+				}
+				50% {
+					transform: scale(1.1);
+					box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+				}
+				100% {
+					transform: scale(1);
+					box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+				}
+			}
+
 			@keyframes matchPop {
 				0% {
 					opacity: 0;
@@ -134,6 +150,22 @@
 			@keyframes fadeOutMatch {
 				to {
 					opacity: 0;
+				}
+			}
+
+			/* Nova Animação para Pulsar Avatares */
+			@keyframes avatarPulseOriginal {
+				0% {
+					transform: scale(1);
+					box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+				}
+				70% {
+					transform: scale(1.1);
+					box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+				}
+				100% {
+					opacity: 1;
+					transform: translateX(0);
 				}
 			}
 
@@ -163,7 +195,7 @@
 			}
 
 			.slide-content {
-				font-family: 'Poppins', sans-serif;
+				font-family: 'Montserrat', sans-serif;
 				font-size: 2rem;
 				text-align: center;
 				padding: 20px;
@@ -248,7 +280,7 @@
 			}
 
 			.final-content {
-				font-family: 'Poppins', sans-serif;
+				font-family: 'Montserrat', sans-serif;
 				opacity: 0;
 				transform: scale(0.5);
 				animation: popIn 1s forwards;
@@ -281,7 +313,7 @@
 			}
 
 			.question {
-				font-family: 'Poppins', sans-serif;
+				font-family: 'Montserrat', sans-serif;
 				font-size: 2.5rem;
 				color: white;
 				margin-bottom: 2rem;
@@ -311,7 +343,7 @@
 			}
 
 			button {
-				font-family: 'Poppins', sans-serif;
+				font-family: 'Montserrat', sans-serif;
 				padding: 15px 30px;
 				font-size: 1.2rem;
 				border: none;
@@ -368,15 +400,15 @@
 			@keyframes pulseMusicToggle {
 				0% {
 					transform: scale(1);
-					opacity: 1;
+					opacity: 0.8;
 				}
 				50% {
 					transform: scale(1.1);
-					opacity: 0.7;
+					opacity: 1;
 				}
 				100% {
 					transform: scale(1);
-					opacity: 1;
+					opacity: 0.8;
 				}
 			}
 
@@ -482,29 +514,109 @@
 				overflow: hidden;
 			}
 
-			/* Estilos para o botão de controle de música */
+			/* Novo estilo para a tela inicial */
+			/* Estilo para a tela inicial */
+			.start-screen {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100vh;
+				background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 1002;
+			}
+
+			.start-content {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				position: relative;
+				height: 100vh;
+				width: 100%;
+			}
+
+			.start-button {
+				/* Remova as seguintes linhas:
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            */
+				padding: 15px 30px;
+				font-size: 1.2rem;
+				background: rgba(255, 255, 255, 0.2);
+				border: 2px solid white;
+				border-radius: 30px;
+				color: white;
+				cursor: pointer;
+				transition: all 0.5s ease;
+				backdrop-filter: blur(5px);
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+				animation: pulseButton 2s infinite;
+				width: auto;
+				max-width: 200px;
+				/* Adicione a seguinte linha para centralizar */
+				margin: auto;
+			}
+
+			.ps-message {
+				color: rgba(255, 255, 255);
+				font-size: 0.8rem;
+				text-align: center;
+				margin: 0;
+				font-weight: 300;
+				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+				opacity: 0.8;
+				position: absolute;
+				bottom: 30px;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 100%;
+			}
+
+			@keyframes pulseButton {
+				0% {
+					transform: scale(1);
+					box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4);
+				}
+				70% {
+					transform: scale(1.05);
+					box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+				}
+				100% {
+					transform: scale(1);
+					box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+				}
+			}
+
+			/* Novo estilo para o botão de música mais clean */
 			#music-toggle {
 				position: fixed;
 				bottom: 20px;
 				right: 20px;
-				width: 60px;
-				height: 60px;
-				background-color: rgba(0, 0, 0, 0.6);
+				width: 40px;
+				height: 40px;
+				background: rgba(255, 255, 255, 0.2);
 				border: none;
 				border-radius: 50%;
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				cursor: pointer;
-				z-index: 1001; /* Acima de outros elementos */
-				transition: background-color 0.3s ease, transform 0.3s ease;
-				font-size: 24px; /* Define o tamanho do emoji */
-				color: white; /* Define a cor do emoji */
+				z-index: 1001;
+				backdrop-filter: blur(5px);
+				transition: all 0.3s ease;
+				font-size: 18px;
+				padding: 0;
+				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 			}
 
 			#music-toggle:hover {
-				background-color: rgba(0, 0, 0, 0.8);
-				transform: scale(1.05); /* Adiciona um efeito de zoom no hover */
+				background: rgba(255, 255, 255, 0.3);
+				transform: scale(1.1);
 			}
 		</style>
 		<!-- Script para definir a variável --vh -->
@@ -521,11 +633,19 @@
 		</script>
 	</head>
 	<body>
+		<!-- Tela inicial -->
+		<div class="start-screen">
+			<div class="start-content">
+				<button class="start-button">Começar 👀</button>
+				<p class="ps-message">Isto responde a pergunta do outro dia? 😅</p>
+			</div>
+		</div>
+
 		<!-- Música de fundo sem autoplay -->
 		<audio id="background-music" src="musica.mp3" loop></audio>
 
 		<!-- Botão de controle de música -->
-		<button id="music-toggle" aria-label="Controle de Música">🔉</button>
+		<button id="music-toggle" aria-label="Controle de Música">🎵</button>
 
 		<!-- Match Animation Container -->
 		<div class="match-container">
@@ -569,34 +689,83 @@
 		<script src="https://cdn.jsdelivr.net/npm/fireworks-js/dist/fireworks.js"></script>
 		<script>
 			document.addEventListener('DOMContentLoaded', () => {
-				// Seleção dos elementos principais
+				const startScreen = document.querySelector('.start-screen');
+				const startButton = document.querySelector('.start-button');
 				const matchContainer = document.querySelector('.match-container');
-				const avatars = document.querySelectorAll('.avatar');
-				const matchText = document.querySelector('.match-text');
 				const slidesContainer = document.querySelector('.slides-container');
 				const progressContainer = document.querySelector('.progress-container');
 				const finalSection = document.querySelector('.final-section');
 				const backgroundMusic = document.getElementById('background-music');
 				const musicToggle = document.getElementById('music-toggle');
 
-				// Animação de entrada dos avatares
-				avatars[0].style.animation = 'slideInLeft 0.8s forwards';
-				avatars[1].style.animation = 'slideInRight 0.8s forwards';
+				// Definir o volume da música para 30%
+				backgroundMusic.volume = 0.3;
 
-				// Animação do texto "IT'S A MATCH!"
-				setTimeout(() => {
-					matchText.style.animation = 'matchPop 0.5s forwards';
-				}, 800);
+				// Esconder o match container inicialmente
+				matchContainer.style.opacity = '0';
+				matchContainer.style.display = 'none';
 
-				// Após a animação, fade out e exibição dos slides
-				setTimeout(() => {
-					matchContainer.style.animation = 'fadeOutMatch 0.5s forwards';
+				// Função para iniciar a experiência
+				function startExperience() {
+					// Iniciar a música
+					backgroundMusic.play().catch(console.error);
+
+					// Fade out suave da tela inicial
+					startScreen.style.transition = 'opacity 1s ease';
+					startScreen.style.opacity = '0';
+
 					setTimeout(() => {
-						matchContainer.style.display = 'none';
-						slidesContainer.style.opacity = '1';
-						initializeSlides(); // Inicializa os slides após a animação
-					}, 500);
-				}, 2500); // Tempo total da animação de match
+						// Remover a tela inicial
+						startScreen.remove();
+
+						// Mostrar o container de match com fade in
+						matchContainer.style.display = 'flex';
+						matchContainer.style.transition = 'opacity 1s ease';
+						matchContainer.style.opacity = '1';
+
+						// Animações modificadas dos avatares
+						const avatars = document.querySelectorAll('.avatar');
+						const matchText = document.querySelector('.match-text');
+
+						// Primeiro avatar desliza e pulsa
+						avatars[0].style.animation = 'slideInLeft 1.5s forwards';
+						setTimeout(() => {
+							avatars[0].style.animation = 'avatarPulse 2s infinite';
+							// Manter o avatar visível
+							avatars[0].style.opacity = '1';
+							avatars[0].style.transform = 'translateX(0)';
+						}, 1500);
+
+						// Segundo avatar desliza e pulsa com atraso
+						setTimeout(() => {
+							avatars[1].style.animation = 'slideInRight 1.5s forwards';
+							setTimeout(() => {
+								avatars[1].style.animation = 'avatarPulse 2s infinite';
+								// Manter o avatar visível
+								avatars[1].style.opacity = '1';
+								avatars[1].style.transform = 'translateX(0)';
+							}, 1500);
+						}, 750);
+
+						// Texto de match aparece após os avatares
+						setTimeout(() => {
+							matchText.style.animation = 'matchPop 1s forwards';
+						}, 2500);
+
+						// Prosseguir para os slides após animação estendida
+						setTimeout(() => {
+							matchContainer.style.animation = 'fadeOutMatch 1s forwards';
+							setTimeout(() => {
+								matchContainer.style.display = 'none';
+								slidesContainer.style.opacity = '1';
+								initializeSlides();
+							}, 1000);
+						}, 5000); // Tempo total de animação estendido
+					}, 1000);
+				}
+
+				// Event listener para o botão de começar
+				startButton.addEventListener('click', startExperience);
 
 				// Função para calcular a diferença de tempo
 				function getTimeDifference() {
@@ -615,7 +784,7 @@
 					remainingSeconds %= 3600;
 					const minutes = Math.floor(remainingSeconds / 60);
 
-					return `<br>${days} dias, ${hours} horas e ${minutes} minutos <br> para ser mais exato`;
+					return `<br>${days} dias, ${hours} horas e ${minutes} minutos <br> para ser mais exato 😅`;
 				}
 
 				// Função para inicializar os slides
@@ -625,7 +794,7 @@
 
 					const textos = [
 						'"Toda desprevenida portanto 🤣"',
-						'Foi assim que tudo começou a 18 de agosto de 2024',
+						'Foi assim que tudo começou a <br>18 de agosto de 2024 ☀️',
 						'De facto já se passou algum tempo',
 						timePassed, // Adiciona a frase dinâmica aqui
 						'E sei que falhei contigo 🙄',
@@ -642,27 +811,27 @@
 						'E por dizer...',
 						'Ainda não comemos os crepes 🥞',
 						'Nem a picanha...',
-						'Não vimos Elemental 🔥🚿',
+						'Não vimos Elemental 🌊🔥',
 						'Nem fizemos a sessão de fotos',
 						'E mais importante...',
 						'Ainda não me ensinaste as tuas receitas 🍰',
-						'Sem esquecer do pain au chocolat, claro! 😅',
-						'E as aulas de tenis 🎾',
-						'E sei que ainda ficou muito mais por fazer...',
-						'Que se quiseres eu quero fazer contigo',
-						'És mesmo especial, e sei que errei contigo',
-
-						'E por isso Adriana...Desta vez quero fazer melhor.',
+						'Sem esquecer do pain au chocolat! 😅',
+						'E as aulas de tenis, claro 🎾',
+						'Sei que ficou muito por fazer...',
+						'Que se quiseres eu quero fazer contigo 🫵🏼',
+						'Sei que errei e estive mal e peço-te desculpa por isso',
+						'És mesmo especial, e não te quero perder 😅',
+						'E por isso Adriana...<br>Desta vez quero fazer melhor.',
 					];
 					// Criar slides
 					textos.forEach((texto, index) => {
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-                        <div class="slide-content">
-                            ${texto}
-                        </div>
-                    `;
+                      <div class="slide-content">
+                          ${texto}
+                      </div>
+                  `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -796,12 +965,12 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-                        <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
-                        <div class="buttons">
-                            <button id="btnSim">Sim 👀</button>
-                            <button id="btnNao">Não</button>
-                        </div>
-                    `;
+                      <div class="question">Será que isto vale mais uma chance? 🤔<br /></div>
+                      <div class="buttons">
+                          <button id="btnSim">Sim 👀</button>
+                          <button id="btnNao">Não</button>
+                      </div>
+                  `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -887,6 +1056,28 @@
 							startStoryTimer();
 						}
 					});
+
+					// *** Adição da Funcionalidade de Controle por Teclado ***
+					// Função para lidar com eventos de teclado
+					function handleKeyDown(event) {
+						if (finalSectionShown) return; // Não fazer nada se a seção final está exibida
+
+						switch (event.key) {
+							case 'ArrowLeft':
+								event.preventDefault(); // Previne o comportamento padrão
+								showPrevSlide();
+								break;
+							case 'ArrowRight':
+								event.preventDefault(); // Previne o comportamento padrão
+								showNextSlide();
+								break;
+							default:
+								break; // Ignorar outras teclas
+						}
+					}
+
+					// Adicionar event listener para keydown
+					document.addEventListener('keydown', handleKeyDown);
 				}
 
 				// Função para criar o voucher
@@ -901,7 +1092,7 @@ Local: Sei Lá
 ===============================
 Válido para: Um encontro especial
 ==============================
-                `;
+            `;
 
 					const blob = new Blob([voucherContent], {type: 'text/plain'});
 					const url = window.URL.createObjectURL(blob);
@@ -967,7 +1158,7 @@ Válido para: Um encontro especial
 								y: 50,
 							},
 							sound: {
-								enable: false,
+								enable: true,
 							},
 						});
 						fireworksInstance.start();
@@ -978,13 +1169,13 @@ Válido para: Um encontro especial
 
 						// Atualizar o conteúdo final com nova mensagem e botão surpresa
 						finalSection.innerHTML = `
-                        <div class="final-content">
-                            <div class="question">Vamooos! </div>
-                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-                            <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-                            <button id="surpriseBtn">Mais uma coisa 🎁</button>
-                        </div>
-                    `;
+                      <div class="final-content">
+                          <div class="question">🫶🏼 </div>
+                          <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                          <p style="font-size: 1.5rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                          <button id="surpriseBtn">Mais uma coisa 🎁</button>
+                      </div>
+                  `;
 
 						// Adicionar event listener para o botão surpresa
 						document
