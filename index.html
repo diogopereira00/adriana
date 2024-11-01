@@ -202,7 +202,6 @@
 				font-size: 2rem;
 				font-weight: bold;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-
 				text-align: center;
 				padding: 20px;
 				max-width: 90%;
@@ -298,6 +297,9 @@
 				max-width: 90%;
 				width: 400px;
 				box-sizing: border-box;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
 			}
 
 			@keyframes popIn {
@@ -582,14 +584,13 @@
 				font-size: 0.9rem;
 				text-align: center;
 				margin: 0;
-				font-weight: 300;
+				font-weight: bold;
 				opacity: 0.8;
 				position: absolute;
 				bottom: 200px;
 				left: 50%;
 				transform: translateX(-50%);
 				width: 100%;
-				font-weight: bold;
 				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 			}
 
@@ -633,6 +634,70 @@
 			#music-toggle:hover {
 				background: rgba(255, 255, 255, 0.3);
 				transform: scale(1.1);
+			}
+
+			/* Estilos para o Modal */
+			.modal {
+				display: none; /* Escondido por padrão */
+				position: fixed;
+				z-index: 2000; /* Superior a outros elementos */
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+				justify-content: center;
+				align-items: center;
+			}
+
+			.modal-content {
+				display: flex; /* Adicionado para centralizar o conteúdo */
+				justify-content: center; /* Centraliza horizontalmente */
+				align-items: center; /* Centraliza verticalmente */
+				background-color: #fefefe;
+				padding: 20px;
+				border: 1px solid #888;
+				border-radius: 10px;
+				max-width: 90%;
+				max-height: 90%;
+				position: relative;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+				animation: fadeIn 0.5s;
+			}
+
+			.close-button {
+				position: absolute;
+				top: 10px;
+				right: 20px;
+				color: #aaa;
+				font-size: 30px;
+				font-weight: bold;
+				cursor: pointer;
+				transition: color 0.3s;
+			}
+
+			.close-button:hover,
+			.close-button:focus {
+				color: black;
+				text-decoration: none;
+			}
+
+			.modal-image {
+				width: 100%;
+				height: auto;
+				max-height: 100%; /* Garante que a imagem não ultrapasse a altura do modal */
+				object-fit: contain; /* Mantém a proporção da imagem */
+				border-radius: 10px;
+			}
+
+			@keyframes fadeIn {
+				from {
+					opacity: 0;
+				}
+				to {
+					opacity: 1;
+				}
 			}
 		</style>
 		<!-- Script para definir a variável --vh -->
@@ -699,6 +764,14 @@
 
 		<div class="final-section">
 			<!-- O conteúdo final será inserido dinamicamente via JavaScript -->
+		</div>
+
+		<!-- Modal Popup -->
+		<div id="popupModal" class="modal">
+			<div class="modal-content">
+				<span class="close-button">&times;</span>
+				<img src="elemental.png" alt="Elemental" class="modal-image" />
+			</div>
 		</div>
 
 		<!-- Biblioteca Fireworks JS -->
@@ -851,10 +924,10 @@
 						const slide = document.createElement('div');
 						slide.className = 'slide';
 						slide.innerHTML = `
-                      <div class="slide-content">
-                          ${texto}
-                      </div>
-                  `;
+                        <div class="slide-content">
+                            ${texto}
+                        </div>
+                    `;
 						slide.style.transform = `translateX(${index * 100}%)`;
 						slidesContainer.appendChild(slide);
 					});
@@ -918,7 +991,7 @@
 							}%)`;
 						});
 
-						// Clear existing timer and reset progress bars
+						// Clear existing timer e reset progress bars
 						clearTimeout(storyTimeout);
 
 						// Reset e iniciar novo timer com progress bars
@@ -988,14 +1061,14 @@
 						const finalContent = document.createElement('div');
 						finalContent.className = 'final-content';
 						finalContent.innerHTML = `
-                      <div class="question">Será que estás disposta a dar-me mais uma chance? 🤔<br /></div>
-					 <div style="font-size:0.8rem;" class="question2">Prometo que não te vais arrepender.</div>
+                        <div class="question">Será que estás disposta a dar-me mais uma chance? 🤔<br /></div>
+                        <div style="font-size:0.8rem;" class="question2">Prometo que não te vais arrepender.</div>
 
-                      <div class="buttons">
-                          <button id="btnSim">Sim 👀</button>
-                          <button id="btnNao">Não</button>
-                      </div>
-                  `;
+                        <div class="buttons">
+                            <button id="btnSim">Sim 👀</button>
+                            <button id="btnNao">Não</button>
+                        </div>
+                    `;
 						finalSection.appendChild(finalContent);
 
 						// Recriar event listeners para os botões
@@ -1105,27 +1178,16 @@
 					document.addEventListener('keydown', handleKeyDown);
 				}
 
-				// Função para criar o voucher
-				function createVoucher() {
-					const voucherContent = `
-===============================
-VALE ENCONTRO NO "SEI LÁ"
-===============================
-Data: ${new Date().toLocaleDateString()}
-Hora: 19:00
-Local: Sei Lá
-===============================
-Válido para: Um encontro especial
-==============================
-            `;
+				// Função para abrir o modal
+				function openModal() {
+					const modal = document.getElementById('popupModal');
+					modal.style.display = 'flex';
+				}
 
-					const blob = new Blob([voucherContent], {type: 'text/plain'});
-					const url = window.URL.createObjectURL(blob);
-					const a = document.createElement('a');
-					a.href = url;
-					a.download = 'vale_encontro.txt';
-					a.click();
-					window.URL.revokeObjectURL(url);
+				// Função para fechar o modal
+				function closeModal() {
+					const modal = document.getElementById('popupModal');
+					modal.style.display = 'none';
 				}
 
 				// Função para inicializar os event listeners dos botões na seção final
@@ -1194,23 +1256,37 @@ Válido para: Um encontro especial
 
 						// Atualizar o conteúdo final com nova mensagem e botão surpresa
 						finalSection.innerHTML = `
-                      <div class="final-content">
-                          <div style="font-size: 1.7rem;" class="question">🫶🏼 </div>
-                          <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
-                          <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
-                          <button id="surpriseBtn">Mais uma coisa 🎁</button>
-                      </div>
-                  `;
+                        <div class="final-content">
+                            <div style="font-size: 3rem;" class="question">❤️</div>
+                            <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Prometo que não te vais arrepender! 😇</p>
+                            <p style="font-size: 1.3rem; color: white; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Vemo-nos no Sei Lá? 👀</p>
+                            <button id="surpriseBtn">Mais uma coisa 🎁</button>
+                        </div>
+                    `;
 
 						// Adicionar event listener para o botão surpresa
 						document
 							.getElementById('surpriseBtn')
-							.addEventListener('click', createVoucher);
+							.addEventListener('click', openModal); // Altere para abrir o modal
+					});
+
+					// Adicionar event listener para fechar o modal
+					const closeButton = document.querySelector('.close-button');
+					closeButton.addEventListener('click', closeModal);
+
+					// Fechar o modal ao clicar fora do conteúdo
+					const modal = document.getElementById('popupModal');
+					window.addEventListener('click', (event) => {
+						if (event.target === modal) {
+							closeModal();
+						}
 					});
 				}
 
 				// Função para atualizar o ícone com base no estado da música
 				function updateIcon() {
+					const backgroundMusic = document.getElementById('background-music');
+					const musicToggle = document.getElementById('music-toggle');
 					if (backgroundMusic.paused) {
 						musicToggle.textContent = '🔇'; // Ícone de volume mudo
 						musicToggle.classList.add('pulse'); // Adiciona a animação de pulsação
@@ -1222,6 +1298,9 @@ Válido para: Um encontro especial
 
 				// Função para controlar a música e atualizar o ícone do botão
 				function initializeMusicControl() {
+					const backgroundMusic = document.getElementById('background-music');
+					const musicToggle = document.getElementById('music-toggle');
+
 					// Inicializa o ícone com base no estado inicial da música
 					updateIcon();
 
@@ -1242,6 +1321,7 @@ Válido para: Um encontro especial
 
 				// Função para iniciar a música após a primeira interação do usuário
 				function iniciarMusicaDepoisInteracao() {
+					const backgroundMusic = document.getElementById('background-music');
 					backgroundMusic
 						.play()
 						.then(() => {
