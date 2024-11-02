@@ -211,7 +211,7 @@
 			/* Modified progress bar styles */
 			.progress-container {
 				position: fixed;
-				top: 20px;
+				top: 10px;
 				left: 0;
 				right: 0;
 				display: flex;
@@ -223,7 +223,7 @@
 
 			.progress-bar {
 				flex: 1;
-				height: 2px;
+				height: 4px;
 				background: rgba(255, 255, 255, 0.3);
 				border-radius: 2px;
 				overflow: hidden;
@@ -234,6 +234,29 @@
 				background: white;
 				width: 0%;
 				transition: width linear;
+			}
+
+			/* Nova Animação para o progresso */
+			@keyframes progressPop {
+				0% {
+					opacity: 0;
+					transform: scale(0.5, 1);
+				}
+				70% {
+					opacity: 1;
+					transform: scale(1.2, 1);
+				}
+				100% {
+					opacity: 1;
+					transform: scale(1, 1);
+				}
+			}
+
+			/* Classe para aplicar a animação progressPop */
+			.progress-bar.pop-in {
+				opacity: 0;
+				transform: scale(0.5, 1);
+				animation: progressPop 0.3s forwards;
 			}
 
 			/* Modified navigation for horizontal scroll */
@@ -932,11 +955,12 @@
 						slidesContainer.appendChild(slide);
 					});
 
-					// Criar barras de progresso
+					// Criar barras de progresso com animação pop-in
 					textos.forEach((_, index) => {
 						const progressBar = document.createElement('div');
-						progressBar.className = 'progress-bar';
+						progressBar.className = 'progress-bar pop-in'; // Adiciona a classe pop-in
 						progressBar.innerHTML = '<div class="progress-bar-fill"></div>';
+						progressBar.style.animationDelay = `${index * 0.07}s`; // Atraso de 0.1s entre cada retângulo
 						progressContainer.appendChild(progressBar);
 					});
 
